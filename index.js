@@ -9,7 +9,9 @@ const taskrouter = require("./routes/taskRoutes");
 
 const app = express();
 const PORT = process.env.PORT;
-connectDb();
+connectDb().then(() =>
+  app.listen(PORT, () => console.log("Server running in port " + PORT))
+);
 
 app.use(express.json());
 app.use(cookieParser());
@@ -18,5 +20,3 @@ app.set("trust proxy", 1);
 
 app.use("/users", router);
 app.use("/tasks", taskrouter);
-
-app.listen(PORT, () => console.log("Server running in port " + PORT));
