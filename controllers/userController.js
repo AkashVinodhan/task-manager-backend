@@ -41,6 +41,7 @@ const loginUser = async (req, res) => {
         maxAge: 3600000000,
         httpOnly: true,
         secure: false,
+        sameSite: "none",
       });
 
       res.send({ message: "logged in", currentUser: updatedUser.name });
@@ -90,6 +91,7 @@ const registerUser = asyncHandler(async (req, res) => {
       maxAge: 3600000000,
       httpOnly: true,
       secure: false,
+      sameSite: "none",
     });
     res.status(201).send({
       currentUser: updatedUser.name,
