@@ -14,6 +14,7 @@ connectDb();
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({ origin: true, credentials: true }));
+app.set("trust proxy", 1);
 
 app.use("/users", router);
 app.use("/tasks", taskrouter);
