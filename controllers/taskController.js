@@ -4,6 +4,7 @@ const getTasks = async (req, res) => {
   try {
     const currentUserId = req.user.id; //user set in auth
     const tasks = await Task.findOne({ user: currentUserId });
+    console.log(tasks);
     res.send(tasks);
   } catch (error) {
     console.log(error);
@@ -19,6 +20,7 @@ const updateTasks = async (req, res) => {
     const tasks = await Task.findOneAndUpdate(filter, update, {
       new: true,
     });
+
     res.send(tasks);
   } catch (error) {
     console.log(error);

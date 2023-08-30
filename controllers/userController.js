@@ -34,17 +34,15 @@ const loginUser = async (req, res) => {
 
       //save token in DB
       user.token = token;
-      const updatedUser = await user.save();
+      await user.save();
 
-      //save token as cookie in client
-      res.cookie("jwt", updatedUser.token, {
-        maxAge: 3600000000,
-        httpOnly: true,
-        secure: false,
-        sameSite: "none",
+      res.send({
+        user: {
+          name: user.name,
+          token: user.token,
+          email: user.email,
+        },
       });
-
-      res.send({ message: "logged in", currentUser: updatedUser.name });
     } else {
       res.status(400).send({ message: "Incorrect Password" });
     }
@@ -73,29 +71,28 @@ const registerUser = asyncHandler(async (req, res) => {
     username,
     password: await hashPassword(password),
   });
+
   //create empty task entry for the user
   const task = await Task.create({
     active: [],
     completed: [],
     user: user._id,
   });
+
   //if successfully created
   if (user) {
     const token = genToken(user._id);
+
     //save token in DB
     user.token = token;
-    const updatedUser = await user.save();
+    await user.save();
 
-    //save token as cookie in client
-    res.cookie("jwt", updatedUser.token, {
-      maxAge: 3600000000,
-      httpOnly: true,
-      secure: false,
-      sameSite: "none",
-    });
     res.status(201).send({
-      currentUser: updatedUser.name,
-      message: "New account created",
+      user: {
+        name: user.name,
+        token: user.token,
+        email: user.email,
+      },
     });
   } else {
     res.status(400).send({ messsage: "Signup failed!" });
@@ -104,8 +101,6 @@ const registerUser = asyncHandler(async (req, res) => {
 
 const logoutUser = (req, res) => {
   try {
-    res.clearCookie("jwt");
-    console.log("logged out");
     res.status(200).send("Logout successfull");
   } catch (error) {
     console.log(error);

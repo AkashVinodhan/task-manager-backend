@@ -1,7 +1,6 @@
 const express = require("express");
 require("dotenv").config();
 const cors = require("cors");
-const cookieParser = require("cookie-parser");
 
 const connectDb = require("./config/dbConfig");
 const router = require("./routes/routes");
@@ -14,9 +13,7 @@ connectDb().then(() =>
 );
 
 app.use(express.json());
-app.use(cookieParser());
 app.use(cors({ origin: true, credentials: true }));
-app.set("trust proxy", 1);
 
 app.use("/users", router);
 app.use("/tasks", taskrouter);
